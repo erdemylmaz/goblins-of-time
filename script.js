@@ -77,6 +77,39 @@ let thirdTime = 54;
 let fourthTime = 66.5;
 let lastTime = 86;
 
+updateSection = (audiosCurrentTime) => {
+  if (audiosCurrentTime > lastTime) {
+    myAudio.pause();
+    myAudio.setAttribute("data-status", "paused");
+
+    playBtn.style.display = "flex";
+    pauseBtn.style.display = "none";
+
+    let clipsArea = document.querySelector(".clips");
+    let clipsAreaPosition = clipsArea.offsetTop;
+
+    console.log(clipsAreaPosition, clipsArea);
+
+    setTimeout(() => {
+      window.scrollTo({
+        left: 0,
+        top: clipsAreaPosition,
+      });
+    }, 1000);
+  }
+  if (audiosCurrentTime > fourthTime) {
+    scrollToItem(4);
+  } else if (fourthTime > audiosCurrentTime && audiosCurrentTime > thirdTime) {
+    scrollToItem(3);
+  } else if (thirdTime > audiosCurrentTime && audiosCurrentTime > secondTime) {
+    scrollToItem(2);
+  } else if (audiosCurrentTime > firstTime && audiosCurrentTime < secondTime) {
+    scrollToItem(1);
+  } else if (audiosCurrentTime <= firstTime) {
+    scrollToItem(0);
+  }
+};
+
 setInterval(() => {
   audiosCurrentTime = myAudio.currentTime;
   // audiosCurrentTime = 43;
@@ -87,45 +120,7 @@ setInterval(() => {
 
     musicCurrentTimeDiv.style.width = `${percentageOfWidth}px`;
 
-    if (audiosCurrentTime > lastTime) {
-      myAudio.pause();
-      myAudio.setAttribute("data-status", "paused");
-
-      playBtn.style.display = "flex";
-      pauseBtn.style.display = "none";
-
-      let clipsArea = document.querySelector(".clips");
-      let clipsAreaPosition = clipsArea.offsetTop;
-
-      console.log(clipsAreaPosition, clipsArea);
-
-      setTimeout(() => {
-        window.scrollTo({
-          left: 0,
-          top: clipsAreaPosition,
-        });
-      }, 1000);
-    }
-    if (audiosCurrentTime > fourthTime) {
-      scrollToItem(4);
-    } else if (
-      fourthTime > audiosCurrentTime &&
-      audiosCurrentTime > thirdTime
-    ) {
-      scrollToItem(3);
-    } else if (
-      thirdTime > audiosCurrentTime &&
-      audiosCurrentTime > secondTime
-    ) {
-      scrollToItem(2);
-    } else if (
-      audiosCurrentTime > firstTime &&
-      audiosCurrentTime < secondTime
-    ) {
-      scrollToItem(1);
-    } else if (audiosCurrentTime <= firstTime) {
-      scrollToItem(0);
-    }
+    updateSection(audiosCurrentTime);
   }
 }, 1000);
 
@@ -295,12 +290,12 @@ const others = [
   {
     type: "text",
     owner: "Semih Asikoglu",
-    text: `Dubbing by`,
+    text: `Seslendirme`,
   },
   {
     type: "text",
     owner: "Rokunoru & skamos",
-    text: `Photos by`,
+    text: `Fotograflar`,
   },
 ];
 
@@ -308,7 +303,7 @@ const othersDiv = document.createElement("div");
 othersDiv.className = "others-div";
 
 othersDiv.innerHTML = `
-  <div class="others-div-text">Others</div>
+  <div class="others-div-text">Diger</div>
 
   <div class="others-divs"></div>
 `;
@@ -323,7 +318,7 @@ others.map((other) => {
 
   if (other.type == "link") {
     div.innerHTML = `
-      <div class="others-text">A video from <span> ${other.owner}</span></div>
+      <div class="others-text"><span>${other.owner}</span>'a ait bir video</div>
       <a href=${other.link} target="_blank" class="others-link">YouTube</a>
     `;
   } else if (other.type == "text") {
@@ -341,6 +336,10 @@ changeTime = (e) => {
   let timeOfMusic = (lastTime * percentage) / 100;
 
   musicCurrentTimeDiv.style.width = `${clickedX}px`;
+
+  let audiosCurrentTime = timeOfMusic;
+
+  updateSection(audiosCurrentTime);
 
   myAudio.currentTime = timeOfMusic;
 };

@@ -105,9 +105,11 @@ img[alt="www.000webhost.com"] {
 
 .music-btn {
   flex: 1;
+  height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
 }
 
 .play-btn {
@@ -395,6 +397,7 @@ img[alt="www.000webhost.com"] {
   height: 48px;
   padding: 0 4px;
   background-color: rgba(255, 255, 255, 0.2);
+  /* background-color: rgba(0, 0, 0, 0.8); */
   margin-left: 8px;
 
   border-radius: 8px;
