@@ -110,6 +110,12 @@ img[alt="www.000webhost.com"] {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+
+  transition: 250ms;
+}
+
+.music-btn:hover {
+  transform: scale(1.2);
 }
 
 .play-btn {
@@ -410,8 +416,11 @@ img[alt="www.000webhost.com"] {
   width: 128px;
   height: 5px;
   background-color: #000;
-  border-radius: 5px;
+  border-radius: 2px;
   cursor: pointer;
+
+  position: relative;
+  transition: 250ms;
 }
 
 .music-current-time-div {
@@ -419,6 +428,22 @@ img[alt="www.000webhost.com"] {
   height: 5px;
   background-color: var(--goblin-green);
   border-radius: 2px;
+
+  transition: 250ms;
+  z-index: 2;
+}
+
+.music-hover {
+  height: 5px;
+  border-radius: 2px;
+  background-color: var(--goblin-green);
+  filter: brightness(1.3);
+  opacity: 0.5;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
 
   transition: 250ms;
 }

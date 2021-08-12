@@ -64,6 +64,7 @@ const pauseBtn = document.querySelector(".pause-btn");
 
 const musicDurationDiv = document.querySelector(".music-duration-div");
 const musicCurrentTimeDiv = document.querySelector(".music-current-time-div");
+const musicHover = document.querySelector(".music-hover");
 
 let musicDurationDivsWidth = musicDurationDiv.getBoundingClientRect().width;
 
@@ -116,7 +117,7 @@ setInterval(() => {
 
   if (myAudio.dataset.status == "playing") {
     let percentage = (audiosCurrentTime * 100) / lastTime;
-    let percentageOfWidth = (128 * percentage) / 100;
+    let percentageOfWidth = (musicDurationDivsWidth * percentage) / 100;
 
     musicCurrentTimeDiv.style.width = `${percentageOfWidth}px`;
 
@@ -138,6 +139,24 @@ playBtn.addEventListener("click", () => {
 
   playBtn.style.display = "none";
   pauseBtn.style.display = "flex";
+});
+
+musicHoverEffect = (e) => {
+  let width = e.offsetX;
+
+  musicHover.style.display = "flex";
+  musicHover.style.opacity = "0.5";
+  musicHover.style.width = `${width}px`;
+};
+
+musicDurationDiv.addEventListener("mousemove", musicHoverEffect);
+musicDurationDiv.addEventListener("mouseleave", () => {
+  musicHover.style.opacity = "0";
+  // musicHover.style.width = `0px`;
+
+  setTimeout(() => {
+    musicHover.style.display = "flex";
+  }, 250);
 });
 
 // muzikdeki sozlere gore asagi scroll atsin
