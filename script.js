@@ -62,25 +62,31 @@ const arrow = document.querySelector(".down-arrow");
 const playBtn = document.querySelector(".play-btn");
 const pauseBtn = document.querySelector(".pause-btn");
 
-document.body.appendChild(myAudio);
+const musicDurationDiv = document.querySelector(".music-duration-div");
+const musicCurrentTimeDiv = document.querySelector(".music-current-time-div");
 
-setTimeout(() => {
-  myAudio.play();
-  myAudio.setAttribute("data-status", "playing");
-}, 2000);
+let musicDurationDivsWidth = musicDurationDiv.getBoundingClientRect().width;
+
+document.body.appendChild(myAudio);
 
 let audiosCurrentTime = 0;
 
 let firstTime = 14.5;
 let secondTime = 38.5;
 let thirdTime = 54;
-let fourthTime = 65;
+let fourthTime = 66.5;
 let lastTime = 86;
 
 setInterval(() => {
   audiosCurrentTime = myAudio.currentTime;
+  // audiosCurrentTime = 43;
 
   if (myAudio.dataset.status == "playing") {
+    let percentage = (audiosCurrentTime * 100) / lastTime;
+    let percentageOfWidth = (128 * percentage) / 100;
+
+    musicCurrentTimeDiv.style.width = `${percentageOfWidth}px`;
+
     if (audiosCurrentTime > lastTime) {
       myAudio.pause();
       myAudio.setAttribute("data-status", "paused");
@@ -88,11 +94,17 @@ setInterval(() => {
       playBtn.style.display = "flex";
       pauseBtn.style.display = "none";
 
-      let clipsAreaPosition = document.querySelector(".clips").offsetTop;
+      let clipsArea = document.querySelector(".clips");
+      let clipsAreaPosition = clipsArea.offsetTop;
 
-      window.scrollTo({
-        top: clipsAreaPosition,
-      });
+      console.log(clipsAreaPosition, clipsArea);
+
+      setTimeout(() => {
+        window.scrollTo({
+          left: 0,
+          top: clipsAreaPosition,
+        });
+      }, 1000);
     }
     if (audiosCurrentTime > fourthTime) {
       scrollToItem(4);
@@ -176,6 +188,11 @@ const clips = [
     link: "https://clips.twitch.tv/DoubtfulIntelligentSnailBabyRage-ULU6DmOU8vItj5JD",
     text: "Korkma kaderden heyhat Elcilerim bekliyor oklarla Korkma karanliktan heyhat Buyuculerim bekliyor parsomenlerler Korkma olumlen heyhat Suikastcilerim bekliyor hancerlerle",
   },
+  {
+    title: "Kahin 7",
+    link: "https://clips.twitch.tv/PreciousCogentVanillaOMGScoots-FY6qn1-eG9YJsnji",
+    text: "Aglayan bir nehirin altinda Kahin guluyor sakalarina Kokusmus bir su kuyusunun altinda Kahin bagiriyor kuzgunlara Zamansiz bir ziyaret O gunu bekle heyhat",
+  },
 ];
 
 const clipsDiv = document.createElement("div");
@@ -186,12 +203,6 @@ clipsDiv.innerHTML = `
 
 	<div class="clips-area"></div>
 	<div class="hover"></div>
-
-	<div class="footer">
-		<span class="footer-text">Music by Semih Asikoglu</span>
-		<br>
-		<span class="footer-text">Photos by Rokunoru & skamos</span>
-	</div>
 `;
 
 document.body.appendChild(clipsDiv);
@@ -204,6 +215,7 @@ onHover = (e) => {
   let itemsPositonX = item.offsetLeft;
   let itemsPositonY = item.offsetTop;
 
+  hover.style.display = "flex";
   hover.style.opacity = "1";
   hover.style.left = `${itemsPositonX}px`;
   hover.style.top = `${itemsPositonY}px`;
@@ -232,6 +244,14 @@ clips.map((clip) => {
   });
 });
 
+clipsArea.addEventListener("mouseleave", () => {
+  hover.style.opacity = "0";
+
+  setTimeout(() => {
+    hover.style.display = "none";
+  }, 500);
+});
+
 let clipsDivsPostion = clipsDiv.offsetTop;
 
 window.addEventListener("scroll", (e) => {
@@ -243,3 +263,87 @@ window.addEventListener("scroll", (e) => {
     arrow.style.display = "flex";
   }
 });
+
+const modal = document.querySelector(".modal");
+const acceptBtn = document.querySelector(".accept-modal-btn");
+const refuseBtn = document.querySelector(".refuse-modal-btn");
+
+refuseBtn.addEventListener("click", () => {
+  location.reload();
+});
+
+acceptBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+
+  let body = document.body;
+  body.style.height = "auto";
+  body.style.minHeight = "100vh";
+  body.style.overflow = "auto";
+
+  setTimeout(() => {
+    myAudio.play();
+    myAudio.setAttribute("data-status", "playing");
+  }, 1000);
+});
+
+const others = [
+  {
+    type: "link",
+    owner: "Rokunoru",
+    link: "https://www.youtube.com/watch?v=24a03rlrOww",
+  },
+  {
+    type: "text",
+    owner: "Semih Asikoglu",
+    text: `Dubbing by`,
+  },
+  {
+    type: "text",
+    owner: "Rokunoru & skamos",
+    text: `Photos by`,
+  },
+];
+
+const othersDiv = document.createElement("div");
+othersDiv.className = "others-div";
+
+othersDiv.innerHTML = `
+  <div class="others-div-text">Others</div>
+
+  <div class="others-divs"></div>
+`;
+
+document.body.appendChild(othersDiv);
+
+const othersArea = document.querySelector(".others-divs");
+
+others.map((other) => {
+  let div = document.createElement("div");
+  div.className = "other";
+
+  if (other.type == "link") {
+    div.innerHTML = `
+      <div class="others-text">A video from <span> ${other.owner}</span></div>
+      <a href=${other.link} target="_blank" class="others-link">YouTube</a>
+    `;
+  } else if (other.type == "text") {
+    div.innerHTML = `
+      <div class="others-text">${other.text} <span> ${other.owner}</span></div>
+      `;
+  }
+
+  othersArea.appendChild(div);
+});
+
+changeTime = (e) => {
+  let clickedX = e.offsetX;
+  let percentage = (clickedX * 100) / musicDurationDivsWidth;
+  let timeOfMusic = (lastTime * percentage) / 100;
+
+  musicCurrentTimeDiv.style.width = `${clickedX}px`;
+
+  myAudio.currentTime = timeOfMusic;
+};
+
+// change music's current time
+musicDurationDiv.addEventListener("click", changeTime);
