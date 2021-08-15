@@ -447,3 +447,12 @@ img[alt="www.000webhost.com"] {
 
   transition: 250ms;
 }
+
+.clip-link {
+  color: var(--goblin-green);
+  text-decoration: none;
+}
+
+.clip-link:hover {
+  border-bottom: 1px solid;
+}

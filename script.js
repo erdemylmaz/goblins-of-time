@@ -125,38 +125,15 @@ setInterval(() => {
   }
 }, 1000);
 
-pauseBtn.addEventListener("click", () => {
-  myAudio.pause();
-  myAudio.setAttribute("data-status", "paused");
+// disable down arrow
+window.addEventListener("scroll", (e) => {
+  let currentPosition = pageYOffset;
 
-  pauseBtn.style.display = "none";
-  playBtn.style.display = "flex";
-});
-
-playBtn.addEventListener("click", () => {
-  myAudio.play();
-  myAudio.setAttribute("data-status", "playing");
-
-  playBtn.style.display = "none";
-  pauseBtn.style.display = "flex";
-});
-
-musicHoverEffect = (e) => {
-  let width = e.offsetX;
-
-  musicHover.style.display = "flex";
-  musicHover.style.opacity = "0.5";
-  musicHover.style.width = `${width}px`;
-};
-
-musicDurationDiv.addEventListener("mousemove", musicHoverEffect);
-musicDurationDiv.addEventListener("mouseleave", () => {
-  musicHover.style.opacity = "0";
-  // musicHover.style.width = `0px`;
-
-  setTimeout(() => {
-    musicHover.style.display = "flex";
-  }, 250);
+  if (currentPosition - 30 >= clipsDivsPostion) {
+    arrow.style.display = "none";
+  } else {
+    arrow.style.display = "flex";
+  }
 });
 
 // muzikdeki sozlere gore asagi scroll atsin
@@ -170,198 +147,31 @@ musicDurationDiv.addEventListener("mouseleave", () => {
 	5- music's duration
 */
 
-const clips = [
-  {
-    title: "Kahin 1",
-    link: "https://clips.twitch.tv/InventiveKitschySheepMau5-6taeUe8PCMcjAMgy",
-    text: "Haberin yok geleceklerden vadedilen eninde sonunda gerceklesecek.O gecenin karanligini bekle heyhat",
-  },
+// // math
+// let number = 124;
+// let increasedPercentage = 12;
+// let needed_percentage_for_decrerase;
 
-  {
-    title: "Kahin 2",
-    link: "https://clips.twitch.tv/HappyObservantKumquatLitFam-VxsBxMQYLlbxdeiG",
-    text: "Ne karlar ne de karanligin icinde heyhat.Aradiginn baiından beri içinde.Ruhunun en derinlerinde uyuyorlar.Etrafindalar o geceyi bekliyorlar.",
-  },
-  {
-    title: "Kahin 3",
-    link: "https://clips.twitch.tv/PreciousTallRatJebaited-0c_CQOhruhq6oCIx",
-    text: "Anlamadigini varsayiyorsun Sen de farkindasin olacaklarin Korkularinin arkasina saklanma Dogrulari soyluyorum sana O gece vaadedilenler olacak Belki son kez belki ilk kez gulenler olacak Zamanin karanlik muhafizlari Zamani geldiginde ateslerinizi yakin",
-  },
-  {
-    title: "Kahin 4",
-    link: "https://clips.twitch.tv/ObliqueUgliestWebHumbleLife-YxhFhs-iGiFM4gji",
-    text: "Golgelerin ic	inde bekliyoruz usulca karanliktan haber getirdim sana Mesaleler hazir kum saatim yanimda Zamandan soz ederim heyhat Kiliclar hazir zaman benim yanimda Onlardan soz ederim heyhat",
-  },
-  {
-    title: "Kahin 5",
-    link: "https://clips.twitch.tv/AltruisticHappyLettuceOhMyDog-sAF-kKlbL-Tezk47",
-    text: "Zamanin bekcileri gun geliyor Golgelerinizden cikin elcilerim Olumun bekcileri karar verin ona Mezarlarinizdan kalkin yoldaslarim Bekle yasamı heyhat zaman bizimle Geldi olum heyhat zaman sizinle",
-  },
-  {
-    title: "Kahin 6",
-    link: "https://clips.twitch.tv/DoubtfulIntelligentSnailBabyRage-ULU6DmOU8vItj5JD",
-    text: "Korkma kaderden heyhat Elcilerim bekliyor oklarla Korkma karanliktan heyhat Buyuculerim bekliyor parsomenlerler Korkma olumlen heyhat Suikastcilerim bekliyor hancerlerle",
-  },
-  {
-    title: "Kahin 7",
-    link: "https://clips.twitch.tv/PreciousCogentVanillaOMGScoots-FY6qn1-eG9YJsnji",
-    text: "Aglayan bir nehirin altinda Kahin guluyor sakalarina Kokusmus bir su kuyusunun altinda Kahin bagiriyor kuzgunlara Zamansiz bir ziyaret O gunu bekle heyhat",
-  },
-];
+// /*
+//   100 * 25 / 50
 
-const clipsDiv = document.createElement("div");
-clipsDiv.className = "clips";
+//   50 * 10 / 100
 
-clipsDiv.innerHTML = `
-	<div class="title">Kahin Klipleri</div>
+//   percentagedNumber * x / 100 = difference
+// */
 
-	<div class="clips-area"></div>
-	<div class="hover"></div>
-`;
+// function findNeededPercentage(number, increasedPercentage) {
+//   let percentagedNumber = number + (number * increasedPercentage) / 100;
+//   let difference = Math.abs(number - percentagedNumber);
 
-document.body.appendChild(clipsDiv);
+//   let neededPercentage = (difference * 100) / percentagedNumber;
 
-const clipsArea = document.querySelector(".clips-area");
-const hover = document.querySelector(".hover");
+//   let providingNumber =
+//     percentagedNumber - (percentagedNumber * neededPercentage) / 100;
 
-onHover = (e) => {
-  let item = e.target;
-  let itemsPositonX = item.offsetLeft;
-  let itemsPositonY = item.offsetTop;
+//   return neededPercentage;
+// }
 
-  hover.style.display = "flex";
-  hover.style.opacity = "1";
-  hover.style.left = `${itemsPositonX}px`;
-  hover.style.top = `${itemsPositonY}px`;
-};
+// let neededPercentage = findNeededPercentage(number, increasedPercentage);
 
-clips.map((clip) => {
-  let clipDiv = document.createElement("a");
-  clipDiv.href = clip.link;
-  clipDiv.setAttribute("target", "_blank");
-  clipDiv.className = "clip";
-
-  clipDiv.innerHTML = `
-	<a href=${clip.link} class="clip-title">${clip.title}</a>
-
-	<div class="clip-text-div">
-		${clip.text}
-	</div>
-	`;
-
-  clipsArea.appendChild(clipDiv);
-
-  let allClips = document.querySelectorAll(".clip");
-
-  allClips.forEach((clip) => {
-    clip.addEventListener("mouseenter", onHover);
-  });
-});
-
-clipsArea.addEventListener("mouseleave", () => {
-  hover.style.opacity = "0";
-
-  setTimeout(() => {
-    hover.style.display = "none";
-  }, 500);
-});
-
-let clipsDivsPostion = clipsDiv.offsetTop;
-
-window.addEventListener("scroll", (e) => {
-  let currentPosition = pageYOffset;
-
-  if (currentPosition - 30 >= clipsDivsPostion) {
-    arrow.style.display = "none";
-  } else {
-    arrow.style.display = "flex";
-  }
-});
-
-const modal = document.querySelector(".modal");
-const acceptBtn = document.querySelector(".accept-modal-btn");
-const refuseBtn = document.querySelector(".refuse-modal-btn");
-
-refuseBtn.addEventListener("click", () => {
-  location.reload();
-});
-
-acceptBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-
-  let body = document.body;
-  body.style.height = "auto";
-  body.style.minHeight = "100vh";
-  body.style.overflow = "auto";
-
-  setTimeout(() => {
-    myAudio.play();
-    myAudio.setAttribute("data-status", "playing");
-  }, 1000);
-});
-
-const others = [
-  {
-    type: "link",
-    owner: "Rokunoru",
-    link: "https://www.youtube.com/watch?v=24a03rlrOww",
-  },
-  {
-    type: "text",
-    owner: "Semih Asikoglu",
-    text: `Seslendirme`,
-  },
-  {
-    type: "text",
-    owner: "Rokunoru & skamos",
-    text: `Fotograflar`,
-  },
-];
-
-const othersDiv = document.createElement("div");
-othersDiv.className = "others-div";
-
-othersDiv.innerHTML = `
-  <div class="others-div-text">Diger</div>
-
-  <div class="others-divs"></div>
-`;
-
-document.body.appendChild(othersDiv);
-
-const othersArea = document.querySelector(".others-divs");
-
-others.map((other) => {
-  let div = document.createElement("div");
-  div.className = "other";
-
-  if (other.type == "link") {
-    div.innerHTML = `
-      <div class="others-text"><span>${other.owner}</span>'a ait bir video</div>
-      <a href=${other.link} target="_blank" class="others-link">YouTube</a>
-    `;
-  } else if (other.type == "text") {
-    div.innerHTML = `
-      <div class="others-text">${other.text} <span> ${other.owner}</span></div>
-      `;
-  }
-
-  othersArea.appendChild(div);
-});
-
-changeTime = (e) => {
-  let clickedX = e.offsetX;
-  let percentage = (clickedX * 100) / musicDurationDivsWidth;
-  let timeOfMusic = (lastTime * percentage) / 100;
-
-  musicCurrentTimeDiv.style.width = `${clickedX}px`;
-
-  let audiosCurrentTime = timeOfMusic;
-
-  updateSection(audiosCurrentTime);
-
-  myAudio.currentTime = timeOfMusic;
-};
-
-// change music's current time
-musicDurationDiv.addEventListener("click", changeTime);
+// console.log(neededPercentage);
